@@ -13,4 +13,4 @@ docs/_build
 tags
 .vscode/
 
-samplerate/_src.py
+samplerate/_src.*

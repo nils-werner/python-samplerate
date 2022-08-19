@@ -1,7 +1,11 @@
 from cffi import FFI
 
 ffibuilder = FFI()
-ffibuilder.set_source('samplerate._src', None)
+ffibuilder.set_source('samplerate._src', """
+    #include <samplerate.h>
+""",
+    libraries=["samplerate"],
+)
 
 ffibuilder.cdef("""
     typedef struct SRC_STATE_tag SRC_STATE ;
@@ -39,7 +43,7 @@ ffibuilder.cdef("""
 
     // Extern "Python"-style callback dropped in favor of compiler-less
     // ABI mode ...
-    //extern "Python" long src_input_callback(void*, float**);
+    extern "Python" long src_input_callback(void*, float**);
 
     // Misc
     int src_error (SRC_STATE *state) ;

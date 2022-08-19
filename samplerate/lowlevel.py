@@ -180,8 +180,8 @@ def src_is_valid_ratio(ratio):
     return bool(_lib.src_is_valid_ratio(ratio))
 
 
-@ffi.callback('src_callback_t')
-def _src_input_callback(cb_data, data):
+@ffi.def_extern()
+def src_input_callback(cb_data, data):
     """Internal callback function to be used with the callback API.
 
     Pulls the Python callback function from the handle contained in `cb_data`
@@ -240,7 +240,7 @@ def src_callback_new(callback, converter_type, channels):
     cb_data = {'callback': callback, 'channels': channels}
     handle = ffi.new_handle(cb_data)
     error = ffi.new('int*')
-    state = _lib.src_callback_new(_src_input_callback, converter_type,
+    state = _lib.src_callback_new(_lib.src_input_callback, converter_type,
                                   channels, error, handle)
     if state == ffi.NULL:
         return None, handle, error[0]
